@@ -1,26 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from "react";
+import AddForm from "./components/AddForm";
+import Todos from "./components/Todos";
+import Container from "@material-ui/core/Container";
+class App extends Component {
+  state = {
+    todos: [
+      {id: 1, content: "Learn React"},
+      {id: 2, content: "Learn Redux"},
+      {id: 3, content: "Learn Bootstrap"},
+    ],
+    open: false,
+  };
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  deleteTodo = (id) => {
+    let todos = this.state.todos.filter((todo) => {
+      return todo.id !== id;
+    });
+
+    this.setState({
+      todos: todos,
+      open: true,
+    });
+  };
+
+  handleClose = () => {
+    this.setState({open: false});
+  };
+
+  addTodo = (todo) => {
+    todo.id = Math.random();
+    let todos = [...this.state.todos, todo];
+    this.setState({
+      todos: todos,
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        <Container maxWidth="sm">
+          <h1>TODO APP</h1>
+          <AddForm addTodo={this.addTodo} />
+          <Todos todos={this.state.todos} deleteTodo={this.deleteTodo} />
+        </Container>
+      </div>
+    );
+  }
 }
 
 export default App;
